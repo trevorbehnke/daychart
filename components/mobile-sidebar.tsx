@@ -1,32 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "@/components/sidebar";
 
-export const MobileSidebar = ({
-  apiLimitCount = 0,
-  isPro = false
-}: {
+// import { useEffect, useState } from "react";
+
+interface MobileSidebarProps {
   apiLimitCount: number;
   isPro: boolean;
-}) => {
-  const [isMounted, setIsMounted] = useState(false);
+}
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+export const MobileSidebar = ({
+  apiLimitCount = 0,
+  isPro = false,
+}: MobileSidebarProps) => {
+  // Hydration error is fixed by adding 'asChild' to the SheetTrigger component
+  // Suggested alternative fixe here:
+  //   const [isMounted, setIsMounted] = useState(false);
 
-  if (!isMounted) {
-    return null;
-  }
+  //   useEffect(() => {
+  //     setIsMounted(true);
+  //   }, []);
+
+  //   if (!isMounted) return null;
 
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="md:hidden">
           <Menu />
         </Button>
