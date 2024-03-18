@@ -9,16 +9,29 @@ datasource db {
 }
 
 model UserApiLimit {
-  id        String      @id @default(cuid())
+  id        String   @id @default(cuid())
   userId    String   @unique
   count     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model UserEvent {
+  id          String    @id @default(cuid())
+  userId      String    
+  title       String    
+  description String?
+  startDate   DateTime  
+  endDate     DateTime  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+}
+
 model UserSubscription {
-  id        String      @id @default(cuid())
-  userId    String   @unique
+  id        String       @id @default(cuid())
+  userId    String       @unique
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")

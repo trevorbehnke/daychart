@@ -38,9 +38,7 @@ const MyComponent = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
+      const response = await axios.get("/api/chart");
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
