@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const testimonials = [
   {
-    name: "Joel",
+    name: "Tom",
     avatar: "J",
     title: "Software Engineer",
     description: "This is the best application I've ever used!",
@@ -19,23 +19,30 @@ const testimonials = [
     name: "Mark",
     avatar: "M",
     title: "CEO",
-    description: "This app has changed my life, cannot imagine working without it!",
+    description:
+      "This app has changed my life, cannot imagine working without it!",
   },
   {
     name: "Mary",
     avatar: "M",
     title: "CFO",
-    description: "The best in class, definitely worth the premium subscription!",
+    description:
+      "The best in class, definitely worth the premium subscription!",
   },
 ];
 
 export const LandingContent = () => {
   return (
     <div className="px-10 pb-20">
-      <h2 className="text-center text-4xl text-white font-extrabold mb-10">Testimonials</h2>
+      <h2 className="text-center text-4xl text-white font-extrabold mb-10">
+        Testimonials
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {testimonials.map((item) => (
-          <Card key={item.description} className="bg-[#192339] border-none text-white">
+          <Card
+            key={item.description}
+            className="bg-[#192339] border-none text-white"
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-x-2">
                 <div>
@@ -51,5 +58,5 @@ export const LandingContent = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
