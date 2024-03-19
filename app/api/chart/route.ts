@@ -33,3 +33,38 @@ export async function GET(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+// This is the POST method for the /api/chart route
+export async function POST(req: Request) {
+  try {
+    // Authenticate the user
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    // Get the request body
+    const body = await req.json();
+
+    // Create a new event for the user
+    const newEvent = await prismadb.userEvent.create({
+      data: {
+        userId: userId,
+        title: body.title,
+        description: body.description,
+      },
+    });
+
+    // Return the new event
+    return new NextResponse(JSON.stringify(newEvent), {
+      status: 201,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.log("[CREATE_USER_EVENT_ERROR]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

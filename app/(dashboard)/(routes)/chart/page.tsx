@@ -29,7 +29,8 @@ const MyComponent = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prompt: "",
+      title: "",
+      description: "",
     },
   });
 
@@ -39,6 +40,17 @@ const MyComponent = () => {
     setLoading(true);
     try {
       const response = await axios.get("/api/chart");
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setLoading(false);
+  };
+
+  const postData = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/chart", values);
       setData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -58,7 +70,7 @@ const MyComponent = () => {
       <div className="px-4 lg:px-8">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(fetchData)}
+            onSubmit={form.handleSubmit(postData)}
             className="
                 rounded-lg 
                 border 
@@ -74,22 +86,33 @@ const MyComponent = () => {
           >
             <FormField
               control={form.control}
-              name="prompt"
+              name="title"
               render={({ field }) => (
                 <FormItem className="col-span-12 lg:col-span-10">
-                  {/* <FormLabel>Prompt</FormLabel> */}
                   <FormControl className="m-0 p-0">
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                       disabled={isLoading}
-                      placeholder="How do I get my data?"
+                      placeholder="Title goes here..."
                       {...field}
                     />
                   </FormControl>
-                  {/* <FormDescription>
-                    This is your public display name.
-                  </FormDescription> */}
-                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="col-span-12 lg:col-span-10">
+                  <FormControl className="m-0 p-0">
+                    <Input
+                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                      disabled={isLoading}
+                      placeholder="Description goes here..."
+                      {...field}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
