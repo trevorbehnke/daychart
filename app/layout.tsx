@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { ToasterProvider } from "@/components/toaster-provider";
 import { ModalProvider } from "@/components/modal-provider";
@@ -30,6 +31,7 @@ export default async function RootLayout({
           <ModalProvider />
           {children}
           <GoogleTagManager gtmId="GTM-5V5QWK7P" />
+          <GoogleAnalytics gaId="G-CCLBHHPCYF" />
         </body>
       </html>
     </ClerkProvider>
