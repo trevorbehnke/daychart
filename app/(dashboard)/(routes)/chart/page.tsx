@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const MyComponent = () => {
   const {
@@ -10,50 +11,87 @@ const MyComponent = () => {
     formState: { errors },
   } = useForm();
 
+  const [apiResponse, setApiResponse] = useState("");
+
   const onSubmit = async (formData: any) => {
     try {
       const response = await axios.post("/api/chart", formData);
-      console.log("RESPONSE --> : ", response);
+      setApiResponse(JSON.stringify(response.data, null, 2));
     } catch (error) {
       console.error("Failed to submit form", error);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="title">title</label>
+    <div className="max-w-md mx-auto my-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="flex flex-col">
+          <label htmlFor="title" className="mb-2 font-semibold">
+            Title
+          </label>
           <input
             id="title"
-            {...register("title", { required: "title is required" })}
+            className="border border-gray-300 p-2 rounded"
+            {...register("title", { required: "Title is required" })}
           />
-          {errors.title && <p>{String(errors.title.message)}</p>}
+          {errors.title && (
+            <p className="text-red-500">{String(errors.title.message)}</p>
+          )}
         </div>
 
-        <div>
-          <label htmlFor="description">description</label>
+        <div className="flex flex-col">
+          <label htmlFor="description" className="mb-2 font-semibold">
+            Description
+          </label>
           <textarea
             id="description"
+            className="border border-gray-300 p-2 rounded"
             {...register("description", {
-              required: "description is required",
+              required: "Description is required",
             })}
           />
-          {errors.description && <p>{String(errors.description.message)}</p>}
+          {errors.description && (
+            <p className="text-red-500">{String(errors.description.message)}</p>
+          )}
         </div>
 
-        <div>
-          <label htmlFor="startDate">Date and Time</label>
+        <div className="flex flex-col">
+          <label htmlFor="startDate" className="mb-2 font-semibold">
+            Date and Time
+          </label>
           <input
             type="datetime-local"
             id="startDate"
+            className="border border-gray-300 p-2 rounded"
             {...register("startDate", { required: "This field is required" })}
           />
-          {errors.startDate && <p>{String(errors.startDate.message)}</p>}
+          {errors.startDate && (
+            <p className="text-red-500">{String(errors.startDate.message)}</p>
+          )}
         </div>
 
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
+          Submit
+        </button>
       </form>
+
+      <button
+        onClick={async () => {
+          try {
+            const response = await axios.get("/api/chart");
+            setApiResponse(JSON.stringify(response.data, null, 2));
+          } catch (error) {
+            console.error("Failed to get data", error);
+          }
+        }}
+        className="mt-4 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+      >
+        GET ALL USEREVENTS
+      </button>
+      {apiResponse && <pre className="mt-4 text-sm">{apiResponse}</pre>}
     </div>
   );
 };
