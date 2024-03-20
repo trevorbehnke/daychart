@@ -1,139 +1,59 @@
 "use client";
-import { useState } from "react";
+
 import axios from "axios";
-import { MessageSquare } from "lucide-react";
-
-import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Heading } from "@/components/heading";
-import { Loader } from "@/components/loader";
-
-import { formSchema } from "./constants";
 
 const MyComponent = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-    },
-  });
-
-  const isLoading = form.formState.isSubmitting;
-
-  const fetchData = async () => {
-    setLoading(true);
+  const onSubmit = async (formData: any) => {
     try {
-      const response = await axios.get("/api/chart");
-      setData(response.data);
+      const response = await axios.post("/api/chart", formData);
+      console.log("RESPONSE --> : ", response);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Failed to submit form", error);
     }
-    setLoading(false);
-  };
-
-  const postData = async (values: z.infer<typeof formSchema>) => {
-    setLoading(true);
-    try {
-      const response = await axios.post("/api/chart", values);
-      setData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    setLoading(false);
   };
 
   return (
     <div>
-      <Heading
-        title="Chart"
-        description="This is the DayChart Page"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
-      />
-      <div className="px-4 lg:px-8">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(postData)}
-            className="
-                rounded-lg 
-                border 
-                w-full 
-                p-4 
-                px-3 
-                md:px-6 
-                focus-within:shadow-sm
-                grid
-                grid-cols-12
-                gap-2
-              "
-          >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="col-span-12 lg:col-span-10">
-                  <FormControl className="m-0 p-0">
-                    <Input
-                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                      disabled={isLoading}
-                      placeholder="Title goes here..."
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className="col-span-12 lg:col-span-10">
-                  <FormControl className="m-0 p-0">
-                    <Input
-                      className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                      disabled={isLoading}
-                      placeholder="Description goes here..."
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Button
-              className="col-span-12 lg:col-span-2 w-full"
-              type="submit"
-              disabled={isLoading}
-              size="icon"
-            >
-              Submit
-            </Button>
-          </form>
-        </Form>
-      </div>
-      {/* <button onClick={fetchData}>Fetch Data</button> */}
-      {isLoading && (
-        <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
-          <Loader />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label htmlFor="title">title</label>
+          <input
+            id="title"
+            {...register("title", { required: "title is required" })}
+          />
+          {errors.title && <p>{String(errors.title.message)}</p>}
         </div>
-      )}
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+
+        <div>
+          <label htmlFor="description">description</label>
+          <textarea
+            id="description"
+            {...register("description", {
+              required: "description is required",
+            })}
+          />
+          {errors.description && <p>{String(errors.description.message)}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="startDate">Date and Time</label>
+          <input
+            type="datetime-local"
+            id="startDate"
+            {...register("startDate", { required: "This field is required" })}
+          />
+          {errors.startDate && <p>{String(errors.startDate.message)}</p>}
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 };

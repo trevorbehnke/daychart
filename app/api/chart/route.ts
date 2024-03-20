@@ -53,6 +53,7 @@ export async function POST(req: Request) {
         userId: userId,
         title: body.title,
         description: body.description,
+        startDate: new Date(body.startDate).toISOString(),
       },
     });
 
