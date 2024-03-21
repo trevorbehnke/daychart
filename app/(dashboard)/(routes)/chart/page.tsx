@@ -57,7 +57,7 @@ const MyComponent = () => {
 
         <div className="flex flex-col">
           <label htmlFor="startDate" className="mb-2 font-semibold">
-            Date and Time
+            Event Start
           </label>
           <input
             type="datetime-local"
@@ -67,6 +67,21 @@ const MyComponent = () => {
           />
           {errors.startDate && (
             <p className="text-red-500">{String(errors.startDate.message)}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="endDate" className="mb-2 font-semibold">
+            Event End
+          </label>
+          <input
+            type="datetime-local"
+            id="endDate"
+            className="border border-gray-300 p-2 rounded"
+            {...register("endDate", { required: "This field is required" })}
+          />
+          {errors.endDate && (
+            <p className="text-red-500">{String(errors.endDate.message)}</p>
           )}
         </div>
 
