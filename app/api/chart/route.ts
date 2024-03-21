@@ -54,6 +54,7 @@ export async function POST(req: Request) {
         title: body.title,
         description: body.description,
         startDate: new Date(body.startDate).toISOString(),
+        endDate: new Date(body.endDate).toISOString(),
       },
     });
 
