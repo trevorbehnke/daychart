@@ -9,7 +9,6 @@ interface ModalProps {
 const EventModal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
-  // Stop propagation for modal content clicks
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -17,11 +16,14 @@ const EventModal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <div
       className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center px-4"
-      onClick={onClose} // Close modal when clicking on the backdrop
+      onClick={onClose}
     >
       <div
         className="bg-white rounded-lg shadow-xl m-4 max-w-lg w-full overflow-hidden"
-        onClick={stopPropagation} // Prevent modal close when clicking inside
+        onClick={stopPropagation}
+        style={{
+          transform: "translateX(calc(18rem / 2))",
+        }}
       >
         <div className="p-4 flex justify-end">
           <button

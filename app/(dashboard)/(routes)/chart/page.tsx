@@ -4,6 +4,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import EventModal from "@/components/event-modal";
+import { PlusCircle } from "lucide-react";
+import EditableDataGrid from "@/components/data-grid";
 
 interface FormData {
   title: string;
@@ -12,7 +14,6 @@ interface FormData {
   endDate: string; // ISO string if using datetime-local input
 }
 
-// Reusable Form Field Component
 const FormField = ({
   id,
   label,
@@ -42,31 +43,6 @@ const FormField = ({
   </div>
 );
 
-// Button Component for Fetching Data
-const GetDataButton = ({
-  setApiResponse,
-}: {
-  setApiResponse: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("/api/chart");
-      setApiResponse(JSON.stringify(response.data, null, 2));
-    } catch (error) {
-      console.error("Failed to get data", error);
-    }
-  };
-
-  return (
-    <button
-      onClick={fetchData}
-      className="mt-4 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-    >
-      GET ALL USEREVENTS
-    </button>
-  );
-};
-
 const MyComponent = () => {
   const {
     register,
@@ -76,9 +52,7 @@ const MyComponent = () => {
   } = useForm<FormData>();
 
   const [isModalOpen, setModalOpen] = useState(false);
-
   const [apiResponse, setApiResponse] = useState("");
-
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
@@ -94,56 +68,61 @@ const MyComponent = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto my-10">
-      <button onClick={openModal} className="btn-primary">
-        Open Form
-      </button>
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="space-y-4">
+        <button
+          onClick={openModal}
+          className="btn-primary flex items-center justify-center"
+        >
+          <PlusCircle size={24} className="mr-2" />
+        </button>
 
-      <EventModal isOpen={isModalOpen} onClose={closeModal}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            id="title"
-            label="Title"
-            register={register}
-            requiredMessage="Title is required"
-            errors={errors}
-          />
-          <FormField
-            id="description"
-            label="Description"
-            register={register}
-            requiredMessage="Description is required"
-            errors={errors}
-            type="textarea"
-          />
-          <FormField
-            id="startDate"
-            label="Event Start"
-            register={register}
-            requiredMessage="This field is required"
-            errors={errors}
-            type="datetime-local"
-          />
-          <FormField
-            id="endDate"
-            label="Event End"
-            register={register}
-            requiredMessage="This field is required"
-            errors={errors}
-            type="datetime-local"
-          />
+        <EventModal isOpen={isModalOpen} onClose={closeModal}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              id="title"
+              label="Title"
+              register={register}
+              requiredMessage="Title is required"
+              errors={errors}
+            />
+            <FormField
+              id="description"
+              label="Description"
+              register={register}
+              requiredMessage="Description is required"
+              errors={errors}
+              type="textarea"
+            />
+            <FormField
+              id="startDate"
+              label="Event Start"
+              register={register}
+              requiredMessage="This field is required"
+              errors={errors}
+              type="datetime-local"
+            />
+            <FormField
+              id="endDate"
+              label="Event End"
+              register={register}
+              requiredMessage="This field is required"
+              errors={errors}
+              type="datetime-local"
+            />
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Submit
-          </button>
-        </form>
-      </EventModal>
-
-      <GetDataButton setApiResponse={setApiResponse} />
-      {apiResponse && <pre className="mt-4 text-sm">{apiResponse}</pre>}
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            >
+              Submit
+            </button>
+          </form>
+        </EventModal>
+      </div>
+      <EditableDataGrid />
+      {/* <GetDataButton setApiResponse={setApiResponse} /> */}
+      {/* {apiResponse && <pre className="mt-4 text-sm">{apiResponse}</pre>} */}
     </div>
   );
 };
