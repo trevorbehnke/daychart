@@ -2,7 +2,6 @@ import Navbar from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { checkSubscription } from "@/lib/subscription";
 import { getApiLimitCount } from "@/lib/api-limit";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const apiLimitCount = await getApiLimitCount();
@@ -16,7 +15,6 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
       <main className="md:pl-72 pb-10">
         <Navbar />
         {children}
-        <SpeedInsights />
       </main>
     </div>
   );
