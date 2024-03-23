@@ -29,7 +29,7 @@ export const LandingHero = () => {
         </div>
       </div>
       <div className="text-sm md:text-xl font-light text-zinc-400">
-        Fulfill Your Day's Potential.
+        Fulfill Your Day&apos;s Potential.
       </div>
       <div>
         <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
