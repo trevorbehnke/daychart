@@ -19,7 +19,6 @@ export function Example() {
         }),
       ]}
     >
-      // ...
     </Carousel>
   );
 }
