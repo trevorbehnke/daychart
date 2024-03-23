@@ -97,4 +97,10 @@ body,
 .animate-gradientShift {
   animation: gradientShift 3s ease infinite;
   background-size: 200% 200%;
+  transition: transform 0.3s ease, filter 0.3s ease; /* Ensure smooth transition for both effects */
+}
+
+.animate-gradientShift:hover {
+  filter: brightness(110%);
+  transform: scale(1.05);
 }
