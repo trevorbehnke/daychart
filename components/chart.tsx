@@ -1,53 +1,80 @@
-"use client";
-
-// components/BarChart.tsx
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
-interface BarChartProps {
+interface PieChartProps {
   data: { label: string; value: number }[];
 }
 
-const BarChart: React.FC<BarChartProps> = ({ data }) => {
-  const d3Container = useRef(null);
+const PieChart: React.FC<PieChartProps> = ({ data }) => {
+  const d3Container = useRef<SVGSVGElement | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
+  // Effect for handling resize
   useEffect(() => {
-    if (data && d3Container.current) {
-      const svg = d3.select(d3Container.current);
+    const handleResize = () => {
+      if (d3Container.current) {
+        setDimensions({
+          width: d3Container.current.clientWidth,
+          height: d3Container.current.clientHeight,
+        });
+      }
+    };
 
-      // Set dimensions
-      const width = 400;
-      const height = 200;
-      svg.attr("width", width).attr("height", height);
+    // Set initial dimensions
+    handleResize();
 
-      // Create scales
-      const xScale = d3
-        .scaleBand()
-        .domain(data.map((d) => d.label))
-        .rangeRound([0, width])
-        .padding(0.1);
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
 
-      const yScale = d3
-        .scaleLinear()
-        .domain([0, d3.max(data, (d) => d.value) as number])
-        .range([height, 0]);
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-      // Draw bars
+  // Effect for drawing the pie chart
+  useEffect(() => {
+    if (data && dimensions.width && dimensions.height && d3Container.current) {
+      d3Container.current.innerHTML = ""; // Clear the container
+      const radius = Math.min(dimensions.width, dimensions.height) / 2;
+
+      // Adjust the inner radius dynamically
+      const innerRadius = radius * 0.5; // Example: make the hole radius half of the outer radius
+
+      const svg = d3
+        .select(d3Container.current)
+        .attr(
+          "viewBox",
+          `-${dimensions.width / 2} -${dimensions.height / 2} ${
+            dimensions.width
+          } ${dimensions.height}`
+        );
+
+      const pie = d3
+        .pie<{ label: string; value: number }>()
+        .value((d) => d.value);
+
+      const arc = d3
+        .arc<d3.PieArcDatum<{ label: string; value: number }>>()
+        .innerRadius(innerRadius) // Dynamic based on window size
+        .outerRadius(radius);
+
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
+
       svg
-        .selectAll(".bar")
-        .data(data)
-        .enter()
-        .append("rect")
-        .classed("bar", true)
-        .attr("x", (d) => xScale(d.label) as number)
-        .attr("y", (d) => yScale(d.value))
-        .attr("width", xScale.bandwidth())
-        .attr("height", (d) => height - yScale(d.value))
-        .attr("fill", "steelblue");
+        .selectAll("path")
+        .data(pie(data))
+        .join("path")
+        .attr("d", arc as any) // Casting to 'any' to avoid TypeScript errors
+        .attr("fill", (d, i) => color(i.toString()));
     }
-  }, [data, d3Container.current]);
+  }, [data, dimensions]); // Dependency array includes dimensions to recalculate on resize
 
-  return <svg className="d3-component" ref={d3Container} />;
+  return (
+    <svg
+      className="d3-component"
+      ref={d3Container}
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
 };
 
-export default BarChart;
+export default PieChart;

@@ -7,7 +7,7 @@ import { PlusCircle } from "lucide-react";
 import EditableDataGrid from "@/components/data-grid";
 import useFormSubmit from "@/hooks/use-form-submit";
 import FormField from "@/components/ui/form-field";
-import BarChart from "@/components/chart";
+import PieChart from "@/components/chart";
 
 interface MyFormData {
   title: string;
@@ -42,9 +42,9 @@ const MyComponent = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1>My First D3.js Chart in Next.js</h1>
-      <BarChart data={data} />
+    // <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="w-full h-screen flex justify-center items-center mt-[-64px]">
+      <PieChart data={data} />
       {/* <button
         onClick={() => setModalOpen(true)}
         className="btn-primary flex items-center justify-center"
