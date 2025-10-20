@@ -1,43 +1,26 @@
-# Build a SaaS AI Platform with Next.js 13, React, Tailwind, Prisma, Stripe | Full Tutorial 2023
+# DayChart SaaS AI Platform with Next.js 13, React, Tailwind, Prisma, and Stripe
 
-![Copy of Copy of Copy of Fullstack Twitter Clone](https://github.com/AntonioErdeljac/next13-ai-saas/assets/23248726/c47e604a-b50b-4eb0-b420-fda20908f522)
-
-
-
-This is a repository for Build a SaaS AI Platform with Next.js 13, React, Tailwind, Prisma, Stripe | Full Tutorial 2023.
-
-[VIDEO TUTORIAL](https://www.youtube.com/watch?v=ffJ38dBzrlY)
+## - Built a scheduling visualization tool with auth, CRUD, Stripe billing, and persistent storage.
+## - Core feature: a 24-hour donut chart mapping events to time slices, plus dashboard metrics.
+## - Added AI suggestions to help users balance routines (exercise, self-care, socializing).
 
 Features:
 
 - Tailwind design
 - Tailwind animations and effects
 - Full responsiveness
-- Clerk Authentication (Email, Google, 9+ Social Logins)
+- Clerk Authentication 
 - Client form validation and handling using react-hook-form
 - Server error handling using react-toast
-- Image Generation Tool (Open AI)
-- Video Generation Tool (Replicate AI)
 - Conversation Generation Tool (Open AI)
-- Music Generation Tool (Replicate AI)
 - Page loading state
 - Stripe monthly subscription
 - Free tier with API limiting
-- How to write POST, DELETE, and GET routes in route handlers (app/api)
-- How to fetch data in server react components by directly accessing database (WITHOUT API! like Magic!)
-- How to handle relations between Server and Child components!
-- How to reuse layouts
 - Folder structure in Next 13 App Router
 
 ### Prerequisites
 
 **Node version 18.x.x**
-
-### Cloning the repository
-
-```shell
-git clone https://github.com/AntonioErdeljac/next13-ai-saas.git
-```
 
 ### Install packages
 
@@ -46,7 +29,6 @@ npm i
 ```
 
 ### Setup .env file
-
 
 ```js
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
@@ -82,11 +64,3 @@ npx prisma db push
 ```shell
 npm run dev
 ```
-
-## Available commands
-
-Running commands with npm `npm run [command]`
-
-| command         | description                              |
-| :-------------- | :--------------------------------------- |
-| `dev`           | Starts a development instance of the app |
